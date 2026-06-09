@@ -1,0 +1,41 @@
+1. reasoning_trace_build.py :
+
+This script takes the generated reasoning traces for each claim and converts 
+them into a Reward Model training dataset. It samples a mix of correct traces 
+(whose verdict matches the ground truth label) and incorrect traces (wrong verdicts), 
+cleans the justification text, and creates training examples in the format
+
+Claim + Verdict + Justification
+
+Each example gets:
+Class = 1  → verdict matches ground truth
+Class = 0  → verdict does not match ground truth
+
+
+
+3. train_verifier.ipynb :
+
+Pipeline is made:
+
+1. Generate Reasoning Traces
+          ↓
+2. reasoning_trace_build.py
+   Creates RM training dataset
+          ↓
+3. train_verifier.ipynb
+   Trains Reward Model
+          ↓
+4. Scores every reasoning trace
+          ↓
+5. Picks Best Trace (BoN)
+          ↓
+6. scorer.py
+   Evaluates results
+
+
+
+
+2. scorer.py :
+
+After the Reward Model ranks the reasoning traces, how well does it rank correct traces 
+and how accurate is the final verdict selected from the top-ranked trace.
